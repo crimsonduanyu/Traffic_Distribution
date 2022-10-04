@@ -12,6 +12,7 @@ import warnings
 class RatioGrowthMethod(object):
     def __init__(self, qij, Oi, Dj, T, Ui=None, Vj=None, X=None):
         self.iter_counter = 0
+        self.final_f = False
         self.show_progress = False
         self.Dm2 = None
         self.Om2 = None
@@ -73,6 +74,7 @@ class RatioGrowthMethod(object):
                 f = FO
             else:
                 f = FD
+            self.final_f = True
 
         elif self.method == 'average':
             FO = self.get_F_Oi(self.Oi)
@@ -120,7 +122,8 @@ class RatioGrowthMethod(object):
                 self.F_Dj = self.get_F_Dj(self.Dj)
             except:
                 pass
-            f = self.get_f()
+            if not self.final_f:
+                f = self.get_f()
             self.qij_m2 = self.qij_m * f
             if self.show_progress:
                 print("F_Oi:", self.F_Oi)
